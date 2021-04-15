@@ -179,7 +179,7 @@ int str_cmp( unsigned char *str1, unsigned char *str2){
 	unsigned int len = str_len(str1);
 	unsigned int i = 0;
 	
-	while(str1[i]!=str2[i] && i<len){
+	while(str1[i]==str2[i] && i<len){
 		i++;
 	}
 	
@@ -188,17 +188,27 @@ int str_cmp( unsigned char *str1, unsigned char *str2){
 	return 0;
 }
 	
+void print_stars(int n){
+	int i = 0;
+	lcd_cmd(0x01);	//clear screen
+	lcd_cmd(0x80);
+	for (i=0;i<n;i++){
+		lcd_data('*');
+	}
+}
+
 // Main Function
 void main(){
 	// Declarations
 	unsigned char code_by[] = "Code By";
 	unsigned char credits[] = "Dhrumil Mistry";
 	//char prompt[] = "Enter pin : ";
-	unsigned char default_password[] = "1";
-	unsigned char pass_entered[2];
+	unsigned char default_password[] = "123";
+	unsigned char pass_entered[4];
 	unsigned char pass;
 	unsigned int pass_len = 1;
-	unsigned int n = str_len(default_password);
+	unsigned int len;
+	unsigned int n = len = str_len(default_password);
 	unsigned int index = 0;
 	P0= 0x00; // Output Declaration
 	op = 0;
@@ -222,6 +232,7 @@ void main(){
 		if(pass != ' '){
 			n--;
 			pass_entered[index] = pass;
+			print_stars(len-n);
 			index++;
 		}
 		else{
@@ -232,12 +243,13 @@ void main(){
 	
 	init_lcd();
 	
-	if( str_cmp(pass_entered,'2') == 1){
+	if( str_cmp(pass_entered,default_password) == 1){
 			op = 1;
 			init_lcd();
-			print_string("Password : ",1);
-			print_string(&pass, 1);
+			//print_string(str_join("Password : ",pass_entered), 1);
+			print_string("USER",1);
 			print_string("Authenticated",2);
+		
 			input_delay();
 			delay(65535);
 			delay(65535);

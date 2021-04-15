@@ -15,6 +15,10 @@ sbit rs = P3^0;
 sbit rw = P3^1;
 sbit en = P3^2;
 
+
+// Door 
+sbit op = P1^7;
+
 //Prototype declarations
 void delay(unsigned int);
 void print_string(char *string, unsigned int n);
@@ -75,20 +79,20 @@ void init_keyboard(){
 	column3 = 1;
 }
 
-unsigned char print_key_pressed(unsigned char key1,unsigned char key2,unsigned char key3){
+unsigned char get_key_pressed(unsigned char key1,unsigned char key2,unsigned char key3){
 	unsigned char ch = ' ';
 	if(column1==0){
-		print_string(&key1,1);
+		//print_string(&key1,1);
 		input_delay();
 		ch = key1;
 	}
 	if(column2==0){
-		print_string(&key2,1);
+		//print_string(&key2,1);
 		input_delay();
 		ch = key2;
 	}
 	if(column3==0){
-		print_string(&key3,1);
+		//print_string(&key3,1);
 		input_delay();
 		ch =  key3;
 	}
@@ -101,29 +105,31 @@ unsigned char get_char(){
 		// For Row A
 		row_A = 0;
 		if (row_A == 0){
-			return print_key_pressed('1','2','3');
+			return get_key_pressed('1','2','3');
 		}
 		
 		// For Row B
 		row_A = 1;
 		row_B = 0;
 		if (row_B == 0){
-			return print_key_pressed('4','5','6');
+			return get_key_pressed('4','5','6');
 		}
 		
 		// For Row C
 		row_B = 1;
 		row_C = 0;
 		if (row_C == 0){
-			return print_key_pressed('7','8','9');
+			return get_key_pressed('7','8','9');
 		}
 
 		// For Row D
 		row_C = 1;
 		row_D = 0;
 		if (row_D == 0){
-			return print_key_pressed('*','0','#');
+			return get_key_pressed('*','0','#');
 		}
+		
+		return ' ';
 	}
 
 	void prompt_user(){
@@ -133,7 +139,7 @@ unsigned char get_char(){
 		delay(1000);
 	}
 // Functions for Strings
-unsigned int str_len(char *string){
+unsigned int str_len(unsigned char *string){
 	unsigned int length = 0;
 	while(string[length]!='\0'){
 		length++;
@@ -141,7 +147,7 @@ unsigned int str_len(char *string){
 	return length;
 }
 
-void print_string(char *string, unsigned int n){
+void print_string(unsigned char *string, unsigned int n){
 	unsigned int i;
 	// init_lcd();
 	if (n==2)
@@ -152,18 +158,50 @@ void print_string(char *string, unsigned int n){
 	}
 }
 
+unsigned char* str_join(unsigned char *str1, unsigned char *str2){
+	unsigned int i = 0;
+	unsigned char new_str[17];
+	unsigned int len = str_len(str1) + str_len(str1);
+	
+	for(i = 0; i<str_len(str1); i++){
+		new_str[i] = str1[i];
+	}
+	
+	for(i = str_len(str1) + 1; i<len; i++){
+		new_str[i] = str2[i];
+	}
+	new_str[i] = '\0';
+	
+	return new_str;
+}
 
+int str_cmp( unsigned char *str1, unsigned char *str2){
+	unsigned int len = str_len(str1);
+	unsigned int i = 0;
+	
+	while(str1[i]!=str2[i] && i<len){
+		i++;
+	}
+	
+	if (len==i)
+		return 1;
+	return 0;
+}
+	
 // Main Function
 void main(){
 	// Declarations
-	char code_by[] = "Code By";
-	char credits[] = "Dhrumil Mistry";
+	unsigned char code_by[] = "Code By";
+	unsigned char credits[] = "Dhrumil Mistry";
 	//char prompt[] = "Enter pin : ";
-	char default_password[] = "1";
-	
+	unsigned char default_password[] = "1";
+	unsigned char pass_entered[2];
 	unsigned char pass;
-	unsigned int pass_len = 1, n=1;
+	unsigned int pass_len = 1;
+	unsigned int n = str_len(default_password);
+	unsigned int index = 0;
 	P0= 0x00; // Output Declaration
+	op = 0;
 	
 	init_lcd();
 	print_string(code_by,1);
@@ -179,15 +217,23 @@ void main(){
 	do{
 		//input_delay();
 		pass = get_char();
+	
 		delay(12000);
-		if(pass != ' ')
+		if(pass != ' '){
 			n--;
-		
+			pass_entered[index] = pass;
+			index++;
+		}
+		else{
+			print_string('*',1);
+			delay(1000);
+		}
 	}while(n>0);
 	
 	init_lcd();
 	
-	if( pass == '2'){
+	if( str_cmp(pass_entered,'2') == 1){
+			op = 1;
 			init_lcd();
 			print_string("Password : ",1);
 			print_string(&pass, 1);

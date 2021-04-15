@@ -75,6 +75,7 @@ void init_keyboard(){
 }
 
 void print_key_pressed(unsigned char key1,unsigned char key2,unsigned char key3){
+	// unsigned int line_number = 1;
 	if(column1==0){
 		lcd_data(key1);
 		input_delay();
@@ -90,24 +91,38 @@ void print_key_pressed(unsigned char key1,unsigned char key2,unsigned char key3)
 }
 
 // Functions for Strings
-void print_string(char *string){
+unsigned int str_len(char *string){
+	unsigned int length = 0;
+	while(string[length]!='\0'){
+		length++;
+	}
+	return length;
+}
+
+void print_string(char *string, unsigned int n){
 	unsigned int i;
 	// init_lcd();
-	for(i=0;i<6;i++){
-		lcd_data(string[i]);
+	if (n==2)
+		lcd_second_line();
+	for(i=0;i<str_len(string);i++){
+			lcd_data(string[i]);
 		delay(1200);
 	}
 }
-	
+
 
 // Main Function
 void main(){
 	// Declarations
-	char string1[6] = {'h','e','l','l','o','\0'};
+	char code_by[] = "Code By";
+	char credits[] = "Dhrumil Mistry";
 	P0= 0x00; // Output Declaration
 	
 	init_lcd();
-	print_string(string1);
+	print_string(code_by,1);
+	input_delay();
+	
+	print_string(credits,2);
 	input_delay();
 	init_lcd();
 	

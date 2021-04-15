@@ -17,7 +17,7 @@ sbit en = P3^2;
 
 
 // Door 
-sbit op = P1^7;
+sbit motor = P1^7;
 
 //Prototype declarations
 void delay(unsigned int);
@@ -211,7 +211,7 @@ void main(){
 	unsigned int n = len = str_len(default_password);
 	unsigned int index = 0;
 	P0= 0x00; // Output Declaration
-	op = 0;
+	motor = 0;
 	
 	init_lcd();
 	print_string(code_by,1);
@@ -244,7 +244,7 @@ void main(){
 	init_lcd();
 	
 	if( str_cmp(pass_entered,default_password) == 1){
-			op = 1;
+			motor = 1;
 			init_lcd();
 			//print_string(str_join("Password : ",pass_entered), 1);
 			print_string("USER",1);

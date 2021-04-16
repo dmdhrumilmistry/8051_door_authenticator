@@ -39,7 +39,7 @@
 
 ### Dependencies
 
-   **`8051 Door Authenticator `** requires user to install few programs to test the simulation-
+   **`8051 Door Authenticator`** requires user to install few programs to simulate the circuit-
   
   - `Proteus`
   
@@ -47,6 +47,9 @@
   
   
   ##
+  ### Questions?
+  
+  You can discuss with others or post a question under `Discussions Tab`
   
   ### Follow Me on:
   

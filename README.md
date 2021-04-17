@@ -4,7 +4,7 @@
 
 1. Download and install [ARM Keil C51](https://www.keil.com/download/product/)
 
-2. Create Project and copy program code from [HERE](https://github.com/dmdhrumilmistry/8051_door_authenticator/blob/main/Test/LCD_and_Keypad_interface/Final%20Code/new_test_code/main.c)
+2. Create Project and copy program code from [main.c](https://github.com/dmdhrumilmistry/8051_door_authenticator/blob/mini-project-final/main.c)
 
 3. Create a hex file for the program.
 
@@ -12,7 +12,7 @@
    
 6. Connect circuit as shown below.
 
-   <img src="https://github.com/dmdhrumilmistry/8051_door_authenticator/blob/main/images/8051-door-authenticator-ckt-diagram-final-project.png">
+   <img src="https://github.com/dmdhrumilmistry/8051_door_authenticator/blob/mini-project-final/Screenshots/main-ckt-diagram.png">
    
 7. Load the hex file on Microcontroller. 
   

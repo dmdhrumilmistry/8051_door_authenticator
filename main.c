@@ -2,7 +2,8 @@
 #include<reg51.h>
 #include<string.h>
 // for Output motor
-sbit motor = P1^7;
+sbit terminal1= P3^3;
+sbit terminal2= P3^4;
 
 // for Keyboard 4x3 (Rows x Columns)
 sbit row_A = P1^0;
@@ -122,31 +123,24 @@ void print_string(char *string, unsigned int n){
 // Main Function
 void main(){
 	// Declarations
-	char code_by[] = "Code By";
-	char credits[] = "Dhrumil Mistry";
-	char auth[] = "Authenticated!";
-	char failed_message[] = "Wrong Pin!!";
+	char auth[] = "Access Granted!";
+	char failed_message[] = "Access Denied!!";
 	char prompt[] = "Enter Pin:";
 	
 	char password[] = "123456";
 	char entered_pass[16];
 	char key_pressed = ' ';
-	int pass_len = 0,i;
+	int pass_len = 0,i,j;
 	P0= 0x00; // Output Declaration
-	// intializing output to low
-	motor = 0;
+	
+	// intializing motor to off state
+	terminal1 = 0;
+	terminal2 = 0;
 	
 	//setting iterations acc to pass len
 	pass_len = strlen(password);
 	
 	init_lcd(1,1);
-	print_string(code_by,1);
-	input_delay();
-	
-	print_string(credits,2);
-	input_delay();
-	init_lcd(1,1);
-	
 	print_string(prompt,1);
 	input_delay();
 	init_lcd(2,0);
@@ -207,8 +201,16 @@ void main(){
 	init_lcd(1,1);
 	
 	if(strcmp(password, entered_pass) == 0){
-		motor = 1;
+		terminal1 = 1;
+		terminal2 = 0;
 		print_string(auth,1);
+		input_delay();
+		input_delay();
+		terminal1 = 0;
+		terminal2 = 0;
+		for(j=0;j<4
+		terminal1 = 0;
+		terminal2 = 1;
 		input_delay();
 		input_delay();
 	} else{
